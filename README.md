@@ -8,6 +8,12 @@
 
 > 截图使用示例数据。
 
+菜单栏快捷操作：
+
+<img src="assets/screenshot-menubar.png" alt="端口管家菜单栏面板，支持搜索端口、查看进程和结束进程" width="340">
+
+> 菜单栏截图为实际界面，端口、进程名和 PID 仅代表截图时的本机状态。
+
 ## 安装
 
 1. 从 [Releases](https://github.com/TpCBB/port-manager/releases) 下载 `PortManager-1.2.0-mac-arm64.dmg`。

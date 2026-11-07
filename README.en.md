@@ -8,6 +8,12 @@ A macOS menu bar utility to find processes using local ports and stop them after
 
 > The screenshot uses example data.
 
+Quick actions from the menu bar:
+
+<img src="assets/screenshot-menubar.png" alt="Port Manager menu bar panel with port search, process details and stop controls" width="340">
+
+> The menu bar screenshot shows the actual interface. Ports, process names and PIDs reflect the local machine at the time of capture.
+
 ## Install
 
 1. Download `PortManager-1.2.0-mac-arm64.dmg` from [Releases](https://github.com/TpCBB/port-manager/releases).
