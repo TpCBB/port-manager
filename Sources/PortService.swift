@@ -116,12 +116,17 @@ enum PortService {
         }
     }
 
-    static func scan() throws -> [PortEntry] {
-        let (status, output, errors) = try run("/usr/sbin/lsof", ["-nP", "-iTCP", "-sTCP:LISTEN", "-iUDP", "-FpcuLftPnT"])
-        guard status == 0 || (status == 1 && output.isEmpty && errors.isEmpty) else {
+    static func parseScanResult(_ status: Int32, output: String, errors: String) throws -> [PortEntry] {
+        // lsof returns 1 when any selector has no match, even when other selectors found ports.
+        guard (status == 0 || status == 1) && errors.isEmpty else {
             throw PortError.message("读取端口失败：\(errors.isEmpty ? "系统查询被中断（\(status)）" : errors)")
         }
-        var entries = parse(output)
+        return parse(output)
+    }
+
+    static func scan() throws -> [PortEntry] {
+        let (status, output, errors) = try run("/usr/sbin/lsof", ["-nP", "-iTCP", "-sTCP:LISTEN", "-iUDP", "-FpcuLftPnT"])
+        var entries = try parseScanResult(status, output: output, errors: errors)
         var metadata: [Int32: (ProcessIdentity?, String, String)] = [:]
         for index in entries.indices {
             let pid = entries[index].pid

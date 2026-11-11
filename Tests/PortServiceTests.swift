@@ -74,6 +74,14 @@ struct PortServiceTests {
         check(parsed.first(where: { $0.port == 8080 })?.addresses.count == 2, "合并 IPv4 / IPv6")
         check(parsed.first(where: { $0.port == 5353 })?.transport == "UDP", "识别 UDP")
         check(PortService.parse("").isEmpty, "空列表")
+        let partialScan = try? PortService.parseScanResult(1, output: fixtureText, errors: "")
+        check(partialScan?.count == 2, "部分查询未匹配时保留已发现的端口")
+        let emptyScan = try PortService.parseScanResult(1, output: "", errors: "")
+        check(emptyScan.isEmpty, "没有匹配端口时返回空列表")
+        let failedScan = try? PortService.parseScanResult(1, output: fixtureText, errors: "permission denied")
+        check(failedScan == nil, "系统查询报告错误时不接受部分结果")
+        let interruptedScan = try? PortService.parseScanResult(15, output: fixtureText, errors: "")
+        check(interruptedScan == nil, "系统查询被中断时不接受部分结果")
         let connectedUDP = PortService.parse("""
         p99999
         ctest client
