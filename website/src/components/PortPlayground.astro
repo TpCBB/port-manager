@@ -26,23 +26,40 @@ const firstTenant = tenants[0];
       </span>
       <span class="socket-ring"></span>
       <span class="socket-note">钥匙在我手里，里面却有人。</span>
+      <span class="socket-drop-label">拖到这儿，查户口</span>
     </div>
     <div class="occupant-motion">
-      <div class="occupant-card">
-        <div class="occupant-head">
-          <span class="process-icon node-icon occupant-icon">?</span>
-          <span class="mono occupant-name">不明住户</span>
-          <span class="occupant-badge">房东：没印象</span>
+      <div class="occupant-drag-shell">
+        <div class="occupant-card">
+          <button
+            class="occupant-drag-handle"
+            data-manual-sound
+            type="button"
+            aria-label="查这个住户的户口"
+            aria-describedby="playground-hint"
+            disabled
+          >
+            <span class="drag-handle-dots" aria-hidden="true">
+              ⠿
+            </span>
+            <span>这位住户，拎得动</span>
+            <Icon name="arrow" size={12} />
+          </button>
+          <div class="occupant-head">
+            <span class="process-icon node-icon occupant-icon">?</span>
+            <span class="mono occupant-name">不明住户</span>
+            <span class="occupant-badge">房东：没印象</span>
+          </div>
+          <strong data-tenant-quote>{firstTenant.quote}</strong>
+          <p class="mono">
+            <span class="occupant-command">身份：待认领</span>
+            <span>· 本人不知情</span>
+          </p>
+          <span class="occupant-speech">（主打一个，不请自来）</span>
+          <span class="occupant-stamp" aria-hidden="true">
+            <span data-tenant-stamp>{firstTenant.stamp}</span>
+          </span>
         </div>
-        <strong data-tenant-quote>{firstTenant.quote}</strong>
-        <p class="mono">
-          <span class="occupant-command">身份：待认领</span>
-          <span>· 本人不知情</span>
-        </p>
-        <span class="occupant-speech">（主打一个，不请自来）</span>
-        <span class="occupant-stamp" aria-hidden="true">
-          <span data-tenant-stamp>{firstTenant.stamp}</span>
-        </span>
       </div>
     </div>
     <div class="inspector-ticket" aria-hidden="true">
@@ -102,16 +119,25 @@ const firstTenant = tenants[0];
         本人没开，:3000 已有人。户口待查。
       </p>
     </div>
-    <button
-      class="button scene-button"
-      type="button"
-      aria-describedby="scene-status"
-      disabled
-    >
-      <span class="scene-button-label">查查谁住这儿</span>
-      <Icon name="arrow" size={16} />
-    </button>
+    <div class="playground-actions">
+      <button class="button scene-nudge" type="button" disabled>
+        <Icon name="terminal" size={15} />
+        <span>拍桌查房</span>
+      </button>
+      <button
+        class="button scene-button"
+        type="button"
+        aria-describedby="scene-status"
+        disabled
+      >
+        <span class="scene-button-label">查查谁住这儿</span>
+        <Icon name="arrow" size={16} />
+      </button>
+    </div>
   </div>
+  <p class="playground-hint" id="playground-hint">
+    点按钮查户口，也可以拍桌子和住户打个招呼。
+  </p>
   <noscript>
     <p class="playground-fallback">
       互动小剧场暂不可用，产品介绍和下载照常营业。

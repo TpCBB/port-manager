@@ -121,11 +121,17 @@ function control(target: EventTarget | null) {
   if (
     !element ||
     element.matches(
-      '[disabled], [aria-disabled="true"], [data-sound-toggle], .skip-link',
+      '[disabled], [aria-disabled="true"], [data-sound-toggle], [data-manual-sound], .skip-link',
     )
   )
     return null;
   return element;
+}
+
+export function playUISound(sound: Sound) {
+  if (typeof AudioContext === 'undefined') return;
+  if (sound === 'click') activate(true);
+  else play('hover');
 }
 
 if (toggle && typeof AudioContext !== 'undefined') {

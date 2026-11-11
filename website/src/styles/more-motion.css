@@ -1,0 +1,161 @@
+.reading-progress {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #86a66d;
+  transform: scaleX(0);
+  transform-origin: left;
+  pointer-events: none;
+}
+.scan-sweep {
+  position: absolute;
+  top: 0;
+  left: 2%;
+  right: 2%;
+  height: 14%;
+  background: linear-gradient(transparent, #8dbc7422);
+  border-bottom: 1px solid #6a986460;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+.button-primary {
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+}
+.float-port {
+  z-index: 3;
+}
+.occupant-drag-shell {
+  width: 100%;
+}
+.occupant-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% + 40px);
+  margin: -20px -20px 15px;
+  padding: 9px 14px;
+  border: 0;
+  border-bottom: 1px dashed #dbe4ce;
+  border-radius: 9px 9px 0 0;
+  background: #f4f7ed;
+  color: #879c71;
+  font-size: 9px;
+  font-weight: 400;
+}
+.occupant-drag-handle:disabled {
+  cursor: default;
+}
+[data-drag-ready='true'] .occupant-drag-handle {
+  cursor: grab;
+  touch-action: none;
+}
+[data-dragging='true'] .occupant-drag-handle {
+  cursor: grabbing;
+}
+.drag-handle-dots {
+  font-size: 17px;
+  line-height: 1;
+}
+.playground-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.scene-nudge {
+  padding: 11px 13px;
+  font-size: 11px;
+  background: transparent;
+  color: #6e8758;
+  border-color: #cfdbbf;
+  border-radius: 5px;
+}
+.scene-nudge:hover {
+  background: #e6eddb;
+}
+.scene-nudge:disabled {
+  opacity: 0.6;
+  transform: none;
+}
+.scene-nudge > svg {
+  transition: transform 0.2s;
+}
+.scene-nudge:hover > svg {
+  transform: rotate(-8deg);
+}
+.playground-hint {
+  text-align: center;
+  color: #8b9b7a;
+  padding: 11px 20px 13px;
+  border-top: 1px dashed #dfe6d6;
+  font-size: 9px;
+  line-height: 1.8;
+  background: #f5f7ef;
+}
+.socket-drop-label {
+  position: absolute;
+  bottom: -23px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: #7f9768;
+  opacity: 0;
+  font-size: 10px;
+}
+[data-dragging='true'] .socket-drop-label {
+  opacity: 1;
+}
+[data-dragging='true'] .socket-ring {
+  border: 2px dashed #8da873;
+  background: #dce8ce4a;
+}
+[data-drop-ready='true'] .socket-ring {
+  background: #d0e2bd;
+  border-color: #668f4a;
+}
+[data-dragging='true'] .occupant-card {
+  box-shadow: 0 18px 40px #3f5f3b24;
+}
+@media (max-width: 767px) {
+  .occupant-drag-handle {
+    width: calc(100% + 32px);
+    margin: -16px -16px 12px;
+    padding: 7px 11px;
+    font-size: 8px;
+  }
+  .playground-actions {
+    width: 100%;
+    gap: 8px;
+  }
+  .playground-actions > .button {
+    min-width: 0;
+    flex: 1;
+    padding: 11px 10px;
+    gap: 6px;
+    font-size: 10px;
+  }
+  .playground-hint {
+    font-size: 8px;
+    padding: 10px 15px 12px;
+  }
+  .socket-drop-label {
+    font-size: 8px;
+  }
+  .playground-scene {
+    height: 320px;
+  }
+  .occupant-motion {
+    top: 103px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .occupant-drag-handle {
+    cursor: pointer;
+  }
+}

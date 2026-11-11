@@ -14,6 +14,7 @@ import screenshot from '../../../assets/screenshot.png';
 import menubar from '../../../assets/screenshot-menubar.png';
 import '../styles/global.css';
 import '../styles/playful.css';
+import '../styles/more-motion.css';
 
 const description =
   '我没开啊，端口谁占的？刚开机就有人占位，项目关了端口还在，刚结束又冒出来。端口管家帮你查清进程和来源，再确认是否结束。原生 macOS，免费开源。';
@@ -94,6 +95,7 @@ const steps = [
       跳到正文
     </a>
     <header class="site-header">
+      <div class="reading-progress" aria-hidden="true"></div>
       <div class="nav-shell container">
         <a class="brand" href="#" aria-label="端口管家，返回首页">
           <Image src={appIcon} alt="" width={36} height={36} format="webp" />
@@ -257,6 +259,7 @@ const steps = [
             <span class="mono">127.0.0.1 / ALL GOOD</span>
           </div>
           <div class="product-image-wrap">
+            <span class="scan-sweep" aria-hidden="true"></span>
             <Image
               class="product-image"
               src={screenshot}

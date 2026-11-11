@@ -108,6 +108,7 @@ media.add('(prefers-reduced-motion: no-preference)', (context) => {
 
   gsap
     .timeline({
+      id: 'tenant-entrance',
       scrollTrigger: {
         trigger: '.port-playground',
         start: 'top 85%',
@@ -263,6 +264,14 @@ const sceneLabel = document.querySelector<HTMLElement>('.scene-button-label');
 const sceneStatus = document.querySelector<HTMLElement>('#scene-status');
 let sceneState: 'busy' | 'free' = 'busy';
 let tenantIndex = 0;
+let sceneContext: gsap.Context | undefined;
+
+function notifyScene(name: string) {
+  const dispatch = () => playground?.dispatchEvent(new CustomEvent(name));
+  // Scene observers own their own animation context; do not nest the contexts.
+  if (sceneContext) sceneContext.ignore(dispatch);
+  else dispatch();
+}
 
 function identifyTenant() {
   if (!playground) return;
@@ -307,6 +316,7 @@ function renderScene() {
     caption.textContent = `查到了，是 ${tenant.process}。确认后，请出去了。`;
   if (sceneState === 'free') identifyTenant();
   sceneButton.disabled = false;
+  playground.dataset.animating = 'false';
   sceneLabel.textContent =
     sceneState === 'free' ? '怎么又有了？' : '查查谁住这儿';
   sceneStatus.textContent =
@@ -322,6 +332,7 @@ function renderScene() {
         element.style.removeProperty(property),
       );
     });
+  notifyScene('port-manager:scene-change');
 }
 
 media.add(
@@ -331,6 +342,7 @@ media.add(
   },
   (context) => {
     if (!playground || !sceneButton || !sceneLabel || !sceneStatus) return;
+    sceneContext = context;
     const animated = context.conditions?.animated;
     renderScene();
     context.add('playScene', () => {
@@ -338,8 +350,7 @@ media.add(
       const reset = sceneState === 'free';
       if (reset) tenantIndex = (tenantIndex + 1) % tenants.length;
       sceneState = reset ? 'busy' : 'free';
-      const entrance = gsap.getTweensOf('.occupant-card')[0];
-      if (entrance?.parent) entrance.parent.progress(1);
+      gsap.getById('tenant-entrance')?.progress(1);
       if (!animated) {
         renderScene();
         return;
@@ -347,6 +358,8 @@ media.add(
 
       if (reset) renderScene();
       sceneButton.disabled = true;
+      playground.dataset.animating = 'true';
+      notifyScene('port-manager:scene-start');
       sceneLabel.textContent = reset ? '不是，又来一个…' : '正在查户口…';
       sceneStatus.textContent = reset
         ? `你：什么都没开。:${tenants[tenantIndex].port}：又有人了。`
@@ -435,10 +448,13 @@ media.add(
         );
     });
     sceneButton.addEventListener('click', context.playScene);
+    playground.addEventListener('port-manager:inspect', context.playScene);
     return () => {
       sceneButton.removeEventListener('click', context.playScene);
+      playground.removeEventListener('port-manager:inspect', context.playScene);
       // Finish the requested state if the motion preference changes mid-animation.
       renderScene();
+      sceneContext = undefined;
     };
   },
 );
