@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Test & build
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v7
+      - name: Test port discovery and process controls
+        run: ./scripts/test.sh
+      - name: Build Apple Silicon app
+        run: ./scripts/build.sh
+      - name: Verify app signature
+        run: codesign --verify --deep --strict 'dist/端口管家.app'

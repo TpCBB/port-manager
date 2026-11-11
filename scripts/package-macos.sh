@@ -14,8 +14,10 @@ trap '/bin/rm -rf "$staging_path"' EXIT
 /usr/bin/hdiutil create -volname '端口管家' -srcfolder "$staging_path" \
   -format UDZO -ov "$image_path"
 /usr/bin/hdiutil verify "$image_path"
+/usr/bin/ditto -c -k --keepParent "$app_path" "$task_root/dist/PortManager.zip"
 (
   cd "$task_root/dist"
   /usr/bin/shasum -a 256 "${image_path:t}" > "${image_path:t}.sha256"
+  /usr/bin/shasum -a 256 PortManager.zip > PortManager.zip.sha256
 )
 printf 'Release package: %s\n' "$image_path"
