@@ -10,7 +10,7 @@
 [![macOS](https://img.shields.io/badge/macOS-13%2B-172C33?logo=apple&logoColor=white)](https://github.com/TpCBB/port-manager/releases)
 [![License](https://img.shields.io/github/license/TpCBB/port-manager)](LICENSE)
 
-  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><strong>Download for macOS ↗</strong></a> · <a href="https://port-manager.hsc28yo.workers.dev/">Website ↗</a> · <a href="#features">Features</a> · <a href="CHANGELOG.md">Changelog</a></p>
+  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><strong>Download for macOS ↗</strong></a> · <a href="https://port-manager.tpc28yo.xyz/">Website ↗</a> · <a href="#features">Features</a> · <a href="CHANGELOG.md">Changelog</a></p>
   <p><a href="README.md">简体中文</a> · English</p>
 
   <a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><img src="assets/preview.en.png" alt="Port Manager preview with the main window and menu bar panel" width="100%"></a>

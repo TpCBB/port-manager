@@ -1,6 +1,8 @@
 # 端口管家官网
 
-官网：<https://port-manager.hsc28yo.workers.dev/>
+官网：<https://port-manager.tpc28yo.xyz/>
+
+Cloudflare 默认地址：<https://port-manager.hsc28yo.workers.dev/>
 
 Astro 静态站点，围绕「我没开啊，端口谁占的？」展示端口占用、后台进程和来源排查。使用 GSAP Timeline、ScrollTrigger 和 Flip 实现逐字入场、端口数字滚动、报错划线、截图轻微倾斜、搜索列表重排，以及可点击的「野生住户登记处」。界面图片直接复用仓库 `assets/` 中的真实应用截图，构建时生成 WebP；发布版本和下载地址读取根目录 `VERSION`。
 
@@ -38,7 +40,7 @@ npm run deploy:check
 npm run deploy
 ```
 
-`deploy:check` 只构建并校验，不上传。`deploy` 先检查、构建，再将静态产物发布到默认域名。
+`deploy:check` 只构建并校验，不上传。`deploy` 先检查、构建，再将静态产物发布到官网域名和 Cloudflare 默认地址。自定义域名由 `cloudflare.config.ts` 中的 `domains` 管理。
 
 Astro 构建仍由 `astro build` 完成。`scripts/prepare-cloudflare.mjs` 使用 Cloudflare 官方工具生成并校验 `.cloudflare/output/`，由 `cf deploy --prebuilt --mode production` 上传。相关 beta 工具版本已固定，生成目录不提交到 Git。
 

@@ -10,7 +10,7 @@
 [![macOS](https://img.shields.io/badge/macOS-13%2B-172C33?logo=apple&logoColor=white)](https://github.com/TpCBB/port-manager/releases)
 [![License](https://img.shields.io/github/license/TpCBB/port-manager)](LICENSE)
 
-  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><strong>下载 macOS 预览版 ↗</strong></a> · <a href="https://port-manager.hsc28yo.workers.dev/">官网 ↗</a> · <a href="#功能">功能介绍</a> · <a href="CHANGELOG.md">更新记录</a></p>
+  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><strong>下载 macOS 预览版 ↗</strong></a> · <a href="https://port-manager.tpc28yo.xyz/">官网 ↗</a> · <a href="#功能">功能介绍</a> · <a href="CHANGELOG.md">更新记录</a></p>
   <p>简体中文 · <a href="README.en.md">English</a></p>
 
   <a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><img src="assets/preview.png" alt="端口管家产品预览：端口主窗口与菜单栏快捷面板" width="100%"></a>
