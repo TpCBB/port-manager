@@ -1,0 +1,730 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../components/Icon.astro';
+import PortPlayground from '../components/PortPlayground.astro';
+import {
+  version,
+  repository,
+  release,
+  download,
+  questions,
+} from '../data/product';
+import appIcon from '../../../assets/app-icon.png';
+import screenshot from '../../../assets/screenshot.png';
+import menubar from '../../../assets/screenshot-menubar.png';
+import '../styles/global.css';
+import '../styles/playful.css';
+
+const description =
+  '我没开啊，端口谁占的？刚开机就有人占位，项目关了端口还在，刚结束又冒出来。端口管家帮你查清进程和来源，再确认是否结束。原生 macOS，免费开源。';
+const canonicalURL = new URL('/', Astro.site);
+const socialImage = new URL('/social-preview.png', Astro.site);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: '端口管家',
+  description,
+  url: canonicalURL.href,
+  image: socialImage.href,
+  downloadUrl: download,
+  softwareVersion: version,
+  operatingSystem: 'macOS 13+ (Apple Silicon)',
+  applicationCategory: 'DeveloperApplication',
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  license: `${repository}/blob/main/LICENSE`,
+};
+const steps = [
+  {
+    number: '01',
+    title: '先抓个现行。',
+    text: '端口一搜。别管它什么时候来的，先看看现在是谁。',
+    icon: 'search' as const,
+  },
+  {
+    number: '02',
+    title: '谁给的钥匙？',
+    text: '进程、启动命令、工作目录、当前父进程，能查到的线索摆一起。',
+    icon: 'terminal' as const,
+  },
+  {
+    number: '03',
+    title: '认清了，再送走。',
+    text: '核对关联端口，确认结束，再扫一遍。别把正干活的也清了。',
+    icon: 'shield' as const,
+  },
+];
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="theme-color" content="#f8f9f6" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:title" content="端口管家 — 我没开啊，端口谁占的？" />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="端口管家" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="端口管家：我没开啊，端口谁占的？原生 macOS 端口管理工具，免费开源。"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="端口管家 — 我没开啊，端口谁占的？" />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <link rel="icon" type="image/png" href={appIcon.src} />
+    <title>端口管家 — 我没开啊，端口谁占的？</title>
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">
+      跳到正文
+    </a>
+    <header class="site-header">
+      <div class="nav-shell container">
+        <a class="brand" href="#" aria-label="端口管家，返回首页">
+          <Image src={appIcon} alt="" width={36} height={36} format="webp" />
+          <span>
+            端口管家<span class="brand-en">PORT MANAGER</span>
+          </span>
+        </a>
+        <nav class="desktop-nav" aria-label="主导航">
+          <a href="#features">能干啥</a>
+          <a href="#how-it-works">怎么个事</a>
+          <a href="#faq">问点事</a>
+        </nav>
+        <div class="nav-actions">
+          <a
+            class="github-link"
+            href={repository}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="在 GitHub 查看源码"
+          >
+            <Icon name="github" size={19} />
+          </a>
+          <a class="button button-small" href={download}>
+            免费下载 <Icon name="down" size={15} />
+          </a>
+          <details class="mobile-nav">
+            <summary aria-label="展开导航">
+              <span></span>
+              <span></span>
+            </summary>
+            <nav aria-label="移动端导航">
+              <a href="#features">能干啥</a>
+              <a href="#how-it-works">怎么个事</a>
+              <a href="#faq">问点事</a>
+              <a href={repository}>GitHub 源码 ↗</a>
+            </nav>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-copy container">
+          <a
+            href={release}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="release-pill hero-enter"
+          >
+            <span class="status-dot"></span> v{version} 预览版 · 野生端口查户口{' '}
+            <span class="pill-arrow">↗</span>
+          </a>
+          <div class="hero-sticker sticker-node" aria-hidden="true">
+            <span class="sticker-node-icon">
+              N<span class="sticker-eye"></span>
+            </span>
+            <span class="sticker-caption">谁开的？本人毫不知情。</span>
+            <svg class="sticker-doodle" viewBox="0 0 100 60" fill="none">
+              <path d="M8 8c42-17 13 58 76 28m-9-5 10 5-8 8" />
+            </svg>
+          </div>
+          <div class="hero-sticker sticker-port" aria-hidden="true">
+            <span class="sticker-caption">项目：还没启动</span>
+            <span class="port-odometer mono">
+              <span>:</span>
+              {'3000'.split('').map((digit) => (
+                <span class="odometer-window">
+                  <span class="odometer-strip">
+                    {[...Array.from({ length: 10 }, (_, i) => i), digit].map(
+                      (number) => (
+                        <span>{number}</span>
+                      ),
+                    )}
+                  </span>
+                </span>
+              ))}
+            </span>
+            <span class="port-sticker-note">
+              <span class="status-dot"></span> 端口：已经有人了
+            </span>
+          </div>
+          <h1 id="hero-title" aria-label="我没开啊。端口谁占的？">
+            <span class="title-line" aria-hidden="true">
+              <span class="hero-title-enter">
+                {'我没开啊。'.split('').map((char) => (
+                  <span class="hero-char">{char}</span>
+                ))}
+              </span>
+            </span>
+            <span class="title-line accent" aria-hidden="true">
+              <span class="hero-title-enter">
+                {'端口谁占的？'.split('').map((char) => (
+                  <span class="hero-char">{char}</span>
+                ))}
+              </span>
+            </span>
+          </h1>
+          <p class="hero-description hero-enter">
+            我：什么都没开。端口：已经有人了。
+            <br />
+            谁开的、哪来的？让管家挨个查户口。
+          </p>
+          <div class="hero-terminal hero-enter" aria-hidden="true">
+            <span class="hero-error-code mono">
+              EADDRINUSE :3000
+              <svg class="error-strike" viewBox="0 0 160 14" fill="none">
+                <path d="M3 10 157 4" pathLength="1" />
+              </svg>
+            </span>
+            <span class="hero-error-resolved">
+              <Icon name="check" size={13} /> 本人不知情，管家去查。
+            </span>
+          </div>
+          <div class="hero-actions hero-enter">
+            <a class="button button-primary" href={download}>
+              <svg
+                width="19"
+                height="21"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M17.1 12.3c0-2 1.6-3 1.7-3.1-1-1.5-2.5-1.7-3.1-1.7-1.3-.2-2.6.8-3.2.8-.7 0-1.7-.8-2.8-.8-1.5 0-2.8.8-3.6 2.1-1.5 2.6-.4 6.5 1 8.6.7 1 1.5 2.1 2.6 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2 .8-1.1 1.1-2.2 1.2-2.3-.1 0-2-.8-2-3.7ZM15 6.1c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1.1 2.9 1.1.1 2.2-.6 2.9-1.3Z" />
+              </svg>
+              下载，抓个现行
+              <Icon name="down" size={18} />
+            </a>
+            <a class="text-link" href="#features">
+              先看看怎么个事 <Icon name="arrow" size={17} />
+            </a>
+          </div>
+          <p class="system-note hero-enter">
+            Apple Silicon · macOS 13+ <span>免费开源，无需注册</span>
+          </p>
+        </div>
+
+        <figure class="product-stage container">
+          <div class="stage-topline">
+            <span>
+              <span class="status-dot"></span> 我的 localhost，怎么成合租房了
+            </span>
+            <span class="mono">127.0.0.1 / ALL GOOD</span>
+          </div>
+          <div class="product-image-wrap">
+            <Image
+              class="product-image"
+              src={screenshot}
+              alt="端口管家主窗口：搜索端口，查看进程、启动命令、工作目录和后台服务。截图使用示例数据。"
+              widths={[640, 960, 1400, 2000]}
+              sizes="(max-width: 768px) 94vw, 1100px"
+              format="webp"
+              quality={88}
+              loading="eager"
+              fetchpriority="high"
+            />
+            <div class="floating-label float-port" aria-hidden="true">
+              <span class="status-dot"></span>
+              <span class="mono">:3000</span>
+              <span>人在，房东不知情</span>
+              <Icon name="check" size={16} />
+            </div>
+          </div>
+          <figcaption>
+            <span>真实应用界面 · 主窗口使用 v1.2.0 示例数据</span>
+            <span class="stage-caption-right">
+              往下滑，管家还有点活 <span>↓</span>
+            </span>
+          </figcaption>
+        </figure>
+      </section>
+
+      <section class="benefits container" aria-label="产品特点">
+        <div>
+          <Icon name="monitor" size={18} />
+          <span>原生 macOS 体验</span>
+        </div>
+        <span class="benefit-divider"></span>
+        <div>
+          <Icon name="network" size={18} />
+          <span>TCP + UDP 一起查看</span>
+        </div>
+        <span class="benefit-divider"></span>
+        <div>
+          <Icon name="shield" size={18} />
+          <span>端口信息只在本机处理</span>
+        </div>
+        <span class="benefit-divider"></span>
+        <a
+          href={`${repository}/blob/main/LICENSE`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="github" size={18} />
+          <span>MIT 开源</span>
+          <Icon name="arrow" size={13} />
+        </a>
+      </section>
+
+      <section
+        class="section features container"
+        id="features"
+        aria-labelledby="features-title"
+      >
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">
+            <span class="eyebrow-dash"></span> WHO GAVE YOU THE KEYS?
+          </p>
+          <div class="heading-row">
+            <h2 id="features-title">
+              电脑是我的。
+              <br />
+              端口像合租的。
+            </h2>
+            <p>
+              不记得开过，也没见它弹个窗口。
+              <br />
+              想用的时候才发现：好，已经住进去了。
+            </p>
+          </div>
+          <div class="pain-alibis" aria-label="常见端口占用场景">
+            <div>
+              <span>「我才刚开机。」</span>
+              <span class="mono">
+                :3000 <span>已经有住户</span>
+              </span>
+            </div>
+            <div>
+              <span>「项目明明关了。」</span>
+              <span class="mono">
+                :5173 <span>还在监听</span>
+              </span>
+            </div>
+            <div>
+              <span>「不是刚结束吗？」</span>
+              <span class="mono">
+                :8080 <span>怎么又来了</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="features-grid">
+          <div class="feature-copy" data-reveal>
+            <span class="section-index mono">
+              01 / 端口没长腿，进程倒挺自来熟
+            </span>
+            <h3>
+              不知道谁开的？
+              <br />
+              查到它姓什么。
+            </h3>
+            <p>
+              输入那个莫名被占的端口，找到对应的进程。
+              <br class="desktop-break" />
+              命令、目录、父进程，能查到的都摊开看。
+            </p>
+            <ul class="check-list">
+              <li>
+                <Icon name="check" size={16} />
+                TCP / UDP，都在这张名单上
+              </li>
+              <li>
+                <Icon name="check" size={16} />
+                IPv4 / IPv6，一个进程别报两次到
+              </li>
+              <li>
+                <Icon name="check" size={16} />
+                3000、5173、8080，老熟人了
+              </li>
+            </ul>
+            <a class="text-link" href="#how-it-works">
+              围观野生进程被认领 <Icon name="arrow" size={17} />
+            </a>
+          </div>
+          <div class="demo-panel" data-reveal>
+            <div class="demo-topline">
+              <span class="mono">
+                <span class="status-dot"></span> LOCALHOST
+              </span>
+              <span class="demo-label">交互演示 · 示例数据</span>
+            </div>
+            <label class="demo-search">
+              <Icon name="search" size={19} />
+              <span class="sr-only">搜索演示端口、PID、应用或命令</span>
+              <input
+                id="demo-search"
+                type="search"
+                placeholder="3000 谁开的？搜一下"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <kbd>/</kbd>
+            </label>
+            <div class="demo-filters" role="group" aria-label="演示协议筛选">
+              <button
+                type="button"
+                class="active"
+                aria-pressed="true"
+                data-filter="all"
+              >
+                全部
+              </button>
+              <button type="button" aria-pressed="false" data-filter="TCP">
+                TCP
+              </button>
+              <button type="button" aria-pressed="false" data-filter="UDP">
+                UDP
+              </button>
+              <span>
+                <span id="result-count">4</span> 个端口
+              </span>
+            </div>
+            <div class="demo-list" aria-label="示例端口列表">
+              <div
+                class="demo-port-row"
+                data-protocol="TCP"
+                data-search="3000 node 4281 npm run dev vite"
+              >
+                <span class="port-number mono">:3000</span>
+                <span class="process-icon node-icon">N</span>
+                <span class="process-info">
+                  <strong>node</strong>
+                  <span class="mono">npm run dev</span>
+                </span>
+                <span class="protocol-tag">TCP</span>
+                <span class="demo-pid mono">4281</span>
+              </div>
+              <div
+                class="demo-port-row"
+                data-protocol="TCP"
+                data-search="5173 node 4390 vite"
+              >
+                <span class="port-number mono">:5173</span>
+                <span class="process-icon vite-icon">ϟ</span>
+                <span class="process-info">
+                  <strong>Vite</strong>
+                  <span class="mono">vite --host</span>
+                </span>
+                <span class="protocol-tag">TCP</span>
+                <span class="demo-pid mono">4390</span>
+              </div>
+              <div
+                class="demo-port-row"
+                data-protocol="TCP"
+                data-search="8080 python 5102 python3 -m http.server"
+              >
+                <span class="port-number mono">:8080</span>
+                <span class="process-icon python-icon">Py</span>
+                <span class="process-info">
+                  <strong>Python</strong>
+                  <span class="mono">python3 -m http.server</span>
+                </span>
+                <span class="protocol-tag">TCP</span>
+                <span class="demo-pid mono">5102</span>
+              </div>
+              <div
+                class="demo-port-row"
+                data-protocol="UDP"
+                data-search="5353 mdnsresponder 310 mdnsresponder"
+              >
+                <span class="port-number mono">:5353</span>
+                <span class="process-icon dns-icon">
+                  <Icon name="network" size={16} />
+                </span>
+                <span class="process-info">
+                  <strong>mDNSResponder</strong>
+                  <span class="mono">mDNSResponder</span>
+                </span>
+                <span class="protocol-tag udp-tag">UDP</span>
+                <span class="demo-pid mono">310</span>
+              </div>
+              <p class="demo-empty" hidden>
+                查无此人。换个关键词再抓。
+              </p>
+            </div>
+            <div class="demo-bottom">
+              <span class="status-dot"></span>
+              <span id="demo-status" role="status" aria-live="polite">
+                名单是演的。你可以真搜。
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="menubar-section" aria-labelledby="menubar-title">
+        <div class="menubar-inner container">
+          <div class="menubar-copy" data-reveal>
+            <span class="section-index mono">02 / 看不见，不等于没住人</span>
+            <h2 id="menubar-title">
+              你没开窗口，
+              <br />
+              它照样占端口。
+            </h2>
+            <p>
+              有些进程不露脸，占位倒是挺积极。
+              <br />
+              管家蹲在菜单栏，你想查的时候点开看。
+            </p>
+            <div class="menubar-note">
+              <span class="outline-icon">
+                <Icon name="command" size={21} />
+              </span>
+              <div>
+                <strong>后台住没住人，别靠猜</strong>
+                <span>
+                  主窗口关了，菜单栏还能查。
+                  <br />
+                  想细看命令和来源，再打开完整窗口。
+                </span>
+              </div>
+            </div>
+            <a class="text-link text-link-light" href={download}>
+              给菜单栏招个管家 <Icon name="arrow" size={17} />
+            </a>
+          </div>
+          <figure class="menu-visual">
+            <div class="orbit orbit-one" aria-hidden="true"></div>
+            <div class="orbit orbit-two" aria-hidden="true"></div>
+            <div class="mac-menu-strip" aria-hidden="true">
+              <span class="menu-strip-left">
+                Finder <span>文件</span>
+                <span>编辑</span>
+              </span>
+              <span class="menu-strip-right">
+                <span class="menu-active">
+                  <Icon name="network" size={17} />
+                </span>
+                <span>⌁</span>
+                <span>100%</span>
+                <span class="mono">09:41</span>
+              </span>
+            </div>
+            <div class="menu-pointer" aria-hidden="true"></div>
+            <Image
+              class="menubar-image"
+              src={menubar}
+              alt="端口管家实际菜单栏界面：搜索端口、查看进程、结束进程、打开完整窗口。"
+              widths={[340, 676]}
+              sizes="(max-width: 600px) 70vw, 300px"
+              format="webp"
+              quality={90}
+              loading="lazy"
+            />
+            <figcaption>实际菜单栏截图 · 内容为截图时的本机状态</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section
+        class="section workflow container"
+        id="how-it-works"
+        aria-labelledby="workflow-title"
+      >
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">
+            <span class="eyebrow-dash"></span> LOCALHOST HAS ROOMMATES.
+          </p>
+          <h2 id="workflow-title">
+            我才刚开机。
+            <br />
+            你们哪来的？
+          </h2>
+        </div>
+        <PortPlayground />
+        <div class="workflow-steps">
+          {steps.map((step) => (
+            <article class="workflow-step" data-reveal>
+              <div class="step-top">
+                <span class="step-number mono">{step.number}</span>
+                <Icon name={step.icon} size={25} />
+              </div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </article>
+          ))}
+        </div>
+        <p class="workflow-footnote">
+          <Icon name="shield" size={15} />{' '}
+          结束的是整个进程，可能影响其关联端口。看清来源，再确认操作。
+        </p>
+      </section>
+
+      <section
+        class="install-section container"
+        id="install"
+        aria-labelledby="install-title"
+      >
+        <div class="install-heading" data-reveal>
+          <span class="section-index mono">GET STARTED</span>
+          <h2 id="install-title">入职，三步搞定。</h2>
+          <p>不用注册，不用开会。拖进去就能上岗。</p>
+          <a
+            class="text-link"
+            href={release}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            查看全部下载与校验文件 <Icon name="arrow" size={16} />
+          </a>
+        </div>
+        <ol class="install-steps" data-reveal>
+          <li>
+            <span class="mono">1</span>
+            <div>
+              <strong>下载安装包</strong>
+              <p>
+                <a href={download}>下载 v{version} DMG</a>，适用于 Apple Silicon
+                Mac。
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="mono">2</span>
+            <div>
+              <strong>拖入「应用程序」</strong>
+              <p>打开 DMG，把「端口管家」拖到 Applications 文件夹。</p>
+            </div>
+          </li>
+          <li>
+            <span class="mono">3</span>
+            <div>
+              <strong>打开，开始查找</strong>
+              <p>
+                当前预览版尚未经过 Apple Developer ID
+                签名或公证。如被系统拦截，确认下载来源后，按「系统设置 →
+                隐私与安全性」中的提示允许打开。
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <section
+        class="section faq container"
+        id="faq"
+        aria-labelledby="faq-title"
+      >
+        <div class="faq-heading" data-reveal>
+          <p class="eyebrow">
+            <span class="eyebrow-dash"></span> GOOD TO KNOW
+          </p>
+          <h2 id="faq-title">先别急着问 AI。</h2>
+          <p>
+            这里可能就有答案。
+            <br />
+            <a
+              class="text-link"
+              href={`${repository}/issues`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              到 GitHub 聊聊 <Icon name="arrow" size={15} />
+            </a>
+          </p>
+        </div>
+        <div class="faq-list" data-reveal>
+          {questions.map((item) => (
+            <details class="faq-item">
+              <summary>
+                {item.question}
+                <Icon name="plus" size={19} />
+              </summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section class="download-section" aria-labelledby="download-title">
+        <div class="download-inner container" data-reveal>
+          <Image
+            src={appIcon}
+            alt="端口管家应用图标"
+            width={86}
+            height={86}
+            format="webp"
+            loading="lazy"
+          />
+          <p class="eyebrow">MY MAC. MY PORTS. WHO ARE YOU?</p>
+          <h2 id="download-title">
+            电脑归你。
+            <br />
+            端口也该归你。
+          </h2>
+          <p>谁开的、谁占的，别再靠猜。</p>
+          <a class="button button-primary" href={download}>
+            下载 macOS 版，查户口 <Icon name="down" size={19} />
+          </a>
+          <span class="download-meta">
+            v{version} 预览版 · Apple Silicon · macOS 13+
+          </span>
+          <a class="install-link" href="#install">
+            首次安装？查看安装说明 ↗
+          </a>
+        </div>
+        <span class="download-watermark" aria-hidden="true">
+          localhost
+        </span>
+      </section>
+    </main>
+
+    <footer class="site-footer container">
+      <a class="footer-brand" href="#">
+        <Image src={appIcon} alt="" width={28} height={28} format="webp" />
+        端口管家<span>专治「这端口谁开的？」</span>
+      </a>
+      <nav aria-label="页脚导航">
+        <a href={repository} target="_blank" rel="noopener noreferrer">
+          GitHub <Icon name="arrow" size={12} />
+        </a>
+        <a
+          href={`${repository}/blob/main/CHANGELOG.md`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          更新日志
+        </a>
+        <a
+          href={`${repository}/blob/main/LICENSE`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          MIT License
+        </a>
+      </nav>
+      <span class="copyright">© {new Date().getFullYear()} TpCBB</span>
+    </footer>
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

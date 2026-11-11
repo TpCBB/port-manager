@@ -1,0 +1,33 @@
+{
+  "name": "port-manager-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "build:cloudflare": "npm run build && node scripts/prepare-cloudflare.mjs",
+    "deploy:check": "npm run build:cloudflare && cf deploy --prebuilt --mode production --dry-run",
+    "deploy": "npm run check && npm run build:cloudflare && cf deploy --prebuilt --mode production",
+    "preview": "astro preview --host 127.0.0.1",
+    "check": "astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "astro": "6.4.8",
+    "gsap": "3.15.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@cloudflare/build-output-utils": "0.9.12",
+    "@cloudflare/config": "0.30.2",
+    "cf": "1.0.0-beta.28",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}

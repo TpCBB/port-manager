@@ -10,7 +10,7 @@
 [![macOS](https://img.shields.io/badge/macOS-13%2B-172C33?logo=apple&logoColor=white)](https://github.com/TpCBB/port-manager/releases)
 [![License](https://img.shields.io/github/license/TpCBB/port-manager)](LICENSE)
 
-  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><strong>下载 macOS 预览版 ↗</strong></a> · <a href="#功能">功能介绍</a> · <a href="CHANGELOG.md">更新记录</a></p>
+  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><strong>下载 macOS 预览版 ↗</strong></a> · <a href="https://port-manager.hsc28yo.workers.dev/">官网 ↗</a> · <a href="#功能">功能介绍</a> · <a href="CHANGELOG.md">更新记录</a></p>
   <p>简体中文 · <a href="README.en.md">English</a></p>
 
   <a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><img src="assets/preview.png" alt="端口管家产品预览：端口主窗口与菜单栏快捷面板" width="100%"></a>
@@ -99,6 +99,8 @@ open dist/端口管家.app
 ```
 
 ## 开发与发布
+
+官网源码位于 [`website/`](website/README.md)，使用 Astro + GSAP，支持本地预览和静态构建。
 
 - **CI** — 每次推送到 `main` 和提交 PR 时运行测试、构建并校验应用签名。
 - **版本管理** — `VERSION` 为构建版本来源；更新记录见 [CHANGELOG.md](CHANGELOG.md)。

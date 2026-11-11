@@ -10,7 +10,7 @@
 [![macOS](https://img.shields.io/badge/macOS-13%2B-172C33?logo=apple&logoColor=white)](https://github.com/TpCBB/port-manager/releases)
 [![License](https://img.shields.io/github/license/TpCBB/port-manager)](LICENSE)
 
-  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><strong>Download for macOS ↗</strong></a> · <a href="#features">Features</a> · <a href="CHANGELOG.md">Changelog</a></p>
+  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><strong>Download for macOS ↗</strong></a> · <a href="https://port-manager.hsc28yo.workers.dev/">Website ↗</a> · <a href="#features">Features</a> · <a href="CHANGELOG.md">Changelog</a></p>
   <p><a href="README.md">简体中文</a> · English</p>
 
   <a href="https://github.com/TpCBB/port-manager/releases/tag/v1.2.1"><img src="assets/preview.en.png" alt="Port Manager preview with the main window and menu bar panel" width="100%"></a>
@@ -99,6 +99,8 @@ Build the DMG, ZIP and checksums:
 ```
 
 ## Development & releases
+
+The product website lives in [`website/`](website/README.md), built with Astro and GSAP. It supports local preview and static builds.
 
 - **CI** — Tests, builds and verifies the app signature on pushes to `main` and pull requests.
 - **Versioning** — `VERSION` is the source of the app version. See [CHANGELOG.md](CHANGELOG.md).

@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../components/Icon.astro';
+import appIcon from '../../../assets/app-icon.png';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="theme-color" content="#f8f9f6" />
+    <link rel="icon" type="image/png" href={appIcon.src} />
+    <title>这页真没人住 — 端口管家</title>
+  </head>
+  <body>
+    <main class="missing-page container">
+      <a href="/" aria-label="端口管家首页">
+        <Image
+          src={appIcon}
+          alt="端口管家"
+          width={64}
+          height={64}
+          format="webp"
+        />
+      </a>
+      <p class="missing-code mono">404 / NO TENANT FOUND</p>
+      <h1>这页，真没人住。</h1>
+      <p>
+        端口可能有人占，这个地址确实没有。
+        <br />
+        回首页，去查真正的住户。
+      </p>
+      <a class="button button-primary" href="/">
+        回首页，继续查户口 <Icon name="arrow" size={17} />
+      </a>
+    </main>
+  </body>
+</html>
+
+<style>
+  .missing-page {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 27px;
+    text-align: center;
+    padding-block: 60px;
+  }
+  .missing-code {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #8a9b79;
+  }
+  h1 {
+    font-size: clamp(32px, 6vw, 58px);
+    letter-spacing: -1px;
+    font-weight: 600;
+  }
+  .missing-page > p:last-of-type {
+    font-size: 13px;
+    line-height: 2;
+    color: #7a8970;
+  }
+  .button {
+    font-size: 12px;
+    margin-top: 8px;
+  }
+</style>

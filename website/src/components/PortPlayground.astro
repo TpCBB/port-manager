@@ -1,0 +1,120 @@
+---
+import Icon from './Icon.astro';
+import { tenants } from '../data/tenants';
+const firstTenant = tenants[0];
+---
+
+<div class="port-playground" data-state="busy">
+  <div class="playground-topline">
+    <span class="mono">
+      <span class="status-dot"></span> LOCALHOST 野生住户登记处
+    </span>
+    <span>纯属演示，不动你电脑里的进程</span>
+  </div>
+  <div class="playground-scene">
+    <div class="scene-orbit" aria-hidden="true"></div>
+    <span class="wild-port wild-port-one" aria-hidden="true">
+      野生进程 +1
+    </span>
+    <span class="wild-port wild-port-two" aria-hidden="true">
+      不是，我请你了吗？
+    </span>
+    <div class="port-socket" aria-hidden="true">
+      <span class="socket-caption mono">YOUR PORT</span>
+      <span class="socket-number mono" data-tenant-port>
+        :{firstTenant.port}
+      </span>
+      <span class="socket-ring"></span>
+      <span class="socket-note">钥匙在我手里，里面却有人。</span>
+    </div>
+    <div class="occupant-motion">
+      <div class="occupant-card">
+        <div class="occupant-head">
+          <span class="process-icon node-icon occupant-icon">?</span>
+          <span class="mono occupant-name">不明住户</span>
+          <span class="occupant-badge">房东：没印象</span>
+        </div>
+        <strong data-tenant-quote>{firstTenant.quote}</strong>
+        <p class="mono">
+          <span class="occupant-command">身份：待认领</span>
+          <span>· 本人不知情</span>
+        </p>
+        <span class="occupant-speech">（主打一个，不请自来）</span>
+        <span class="occupant-stamp" aria-hidden="true">
+          <span data-tenant-stamp>{firstTenant.stamp}</span>
+        </span>
+      </div>
+    </div>
+    <div class="inspector-ticket" aria-hidden="true">
+      <span class="inspector-caption">
+        <Icon name="search" size={14} /> 查到户口了
+      </span>
+      <div>
+        <span>住户</span>
+        <strong class="mono" data-tenant-process>
+          {firstTenant.process}
+        </strong>
+      </div>
+      <div>
+        <span>PID</span>
+        <strong class="mono" data-tenant-pid>
+          {firstTenant.pid}
+        </strong>
+      </div>
+      <div>
+        <span>命令</span>
+        <strong
+          class="mono inspector-command"
+          data-tenant-command
+          title={firstTenant.command}
+        >
+          {firstTenant.command}
+        </strong>
+      </div>
+      <div>
+        <span>占用端口</span>
+        <strong class="mono" data-tenant-port>
+          :{firstTenant.port}
+        </strong>
+      </div>
+      <span class="inspector-verdict">看清来源和关联端口，再确认结束。</span>
+    </div>
+    <div class="free-port" aria-hidden="true">
+      <span class="free-port-check">
+        <Icon name="check" size={30} />
+      </span>
+      <span class="mono" data-tenant-port>
+        :{firstTenant.port}
+      </span>
+      <strong>户口查清，位置腾出。</strong>
+      <span class="free-port-caption">查到了，是 node。确认后，请出去了。</span>
+    </div>
+    <div class="scene-particles" aria-hidden="true">
+      {Array.from({ length: 10 }, (_, i) => (
+        <span class="scene-particle" style={`--i:${i}`}></span>
+      ))}
+    </div>
+  </div>
+  <div class="playground-controls">
+    <div class="scene-message">
+      <span class="status-dot"></span>
+      <p id="scene-status" role="status" aria-live="polite">
+        本人没开，:3000 已有人。户口待查。
+      </p>
+    </div>
+    <button
+      class="button scene-button"
+      type="button"
+      aria-describedby="scene-status"
+      disabled
+    >
+      <span class="scene-button-label">查查谁住这儿</span>
+      <Icon name="arrow" size={16} />
+    </button>
+  </div>
+  <noscript>
+    <p class="playground-fallback">
+      互动小剧场暂不可用，产品介绍和下载照常营业。
+    </p>
+  </noscript>
+</div>
