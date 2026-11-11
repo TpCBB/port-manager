@@ -107,6 +107,23 @@ const steps = [
           <a href="#faq">问点事</a>
         </nav>
         <div class="nav-actions">
+          <button
+            class="sound-toggle"
+            type="button"
+            data-sound-toggle
+            aria-pressed="false"
+            aria-label="开启按钮音效"
+            title="开启按钮音效"
+            hidden
+          >
+            <span data-sound-icon-on hidden>
+              <Icon name="volume" size={17} />
+            </span>
+            <span data-sound-icon-off>
+              <Icon name="muted" size={17} />
+            </span>
+            <span class="sound-toggle-label">音效</span>
+          </button>
           <a
             class="github-link"
             href={repository}

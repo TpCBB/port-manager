@@ -1,3 +1,50 @@
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 9px;
+  color: #839176;
+  background: transparent;
+  border: 1px solid #dfe5d7;
+  border-radius: 5px;
+  font-size: 11px;
+  line-height: 1;
+  transition:
+    color 0.2s,
+    background 0.2s;
+}
+.sound-toggle[hidden] {
+  display: none;
+}
+.sound-toggle[aria-pressed='true'] {
+  color: #24654e;
+  background: #eaf0e2;
+  border-color: #cad9bd;
+}
+.sound-toggle:hover {
+  background: #eaf0e2;
+}
+.sound-toggle > span {
+  display: inline-flex;
+}
+.sound-toggle > span[hidden] {
+  display: none;
+}
+@media (max-width: 767px) {
+  .nav-actions {
+    gap: 8px;
+  }
+  .sound-toggle {
+    width: 30px;
+    height: 32px;
+    padding: 0;
+  }
+  .sound-toggle > .sound-toggle-label {
+    display: none;
+  }
+}
+
 .hero h1 {
   font-size: clamp(58px, 6.8vw, 94px);
   letter-spacing: -4px;

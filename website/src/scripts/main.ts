@@ -1,4 +1,5 @@
 import { gsap, ScrollTrigger, media, animateResults } from './animations';
+import './sounds';
 
 // Demo data stays in the page; this never reads or controls the visitor's machine.
 const search = document.querySelector<HTMLInputElement>('#demo-search');
