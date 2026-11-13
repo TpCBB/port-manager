@@ -2,13 +2,13 @@
 import { Image } from 'astro:assets';
 import Icon from '../components/Icon.astro';
 import PortPlayground from '../components/PortPlayground.astro';
+import PlatformDownload from '../components/PlatformDownload.astro';
 import {
   version,
   repository,
   release,
   download,
   downloadWindows,
-  downloadWindowsZip,
   questions,
 } from '../data/product';
 import appIcon from '../../../assets/app-icon.png';
@@ -140,9 +140,7 @@ const steps = [
           >
             <Icon name="github" size={19} />
           </a>
-          <a class="button button-small" href="#download">
-            免费下载 <Icon name="down" size={15} />
-          </a>
+          <PlatformDownload compact alternatives={false} />
           <details class="mobile-nav">
             <summary aria-label="展开导航">
               <span></span>
@@ -234,30 +232,13 @@ const steps = [
             </span>
           </div>
           <div class="hero-actions hero-enter">
-            <a class="button button-primary" href={download}>
-              <svg
-                width="19"
-                height="21"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M17.1 12.3c0-2 1.6-3 1.7-3.1-1-1.5-2.5-1.7-3.1-1.7-1.3-.2-2.6.8-3.2.8-.7 0-1.7-.8-2.8-.8-1.5 0-2.8.8-3.6 2.1-1.5 2.6-.4 6.5 1 8.6.7 1 1.5 2.1 2.6 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2 .8-1.1 1.1-2.2 1.2-2.3-.1 0-2-.8-2-3.7ZM15 6.1c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1.1 2.9 1.1.1 2.2-.6 2.9-1.3Z" />
-              </svg>
-              下载 macOS 版
-              <Icon name="down" size={18} />
-            </a>
-            <a class="button button-windows" href={downloadWindows}>
-              <Icon name="windows" size={18} />
-              下载 Windows 版 <Icon name="down" size={18} />
-            </a>
+            <PlatformDownload />
             <a class="text-link" href="#features">
               看看怎么管端口 <Icon name="arrow" size={17} />
             </a>
           </div>
-          <p class="system-note hero-enter">
-            macOS 13+ · Apple Silicon{' '}
-            <span>Windows x64 · .NET Framework 4.x</span>
+          <p class="system-note hero-enter" data-download-requirements>
+            macOS 13+ / Apple Silicon · Windows x64 / .NET Framework 4.x
           </p>
         </div>
 
@@ -720,21 +701,14 @@ const steps = [
           </h2>
           <p>哪些还在跑，哪些可以关，看清后再决定。</p>
           <div class="platform-downloads">
-            <a class="button button-primary" href={download}>
-              下载 macOS 版 <Icon name="down" size={19} />
-            </a>
-            <a class="button button-windows" href={downloadWindows}>
-              <Icon name="windows" size={18} />
-              下载 Windows 版 <Icon name="down" size={19} />
-            </a>
+            <PlatformDownload />
           </div>
           <span class="download-meta">
-            v{version} 预览版 · macOS 13+ / Apple Silicon · Windows x64 / .NET
-            4.x
+            v{version} 预览版 ·{' '}
+            <span data-download-requirements>
+              macOS 13+ / Apple Silicon · Windows x64 / .NET Framework 4.x
+            </span>
           </span>
-          <a class="install-link" href={downloadWindowsZip}>
-            Windows ZIP 便携包 ↗
-          </a>
           <a class="install-link" href="#install">
             首次安装？查看安装说明 ↗
           </a>

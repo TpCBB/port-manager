@@ -835,12 +835,57 @@
   gap: 16px;
   margin-top: 28px;
 }
-.button-windows {
-  border: 1px solid #a5b699;
+[data-platform-icon] {
+  display: inline-flex;
+}
+[data-platform-icon][hidden] {
+  display: none;
+}
+.download-options {
+  position: relative;
+  z-index: 5;
+  color: #62765a;
+  font-size: 12px;
+}
+.download-options > summary {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  list-style: none;
+  cursor: pointer;
+  padding: 10px 0;
+}
+.download-options > summary::-webkit-details-marker {
+  display: none;
+}
+.download-options-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 255px;
+  padding: 7px;
+  border: 1px solid #d6e1cd;
+  border-radius: 9px;
+  background: #fffef9;
+  box-shadow: 0 12px 32px #243e291a;
+  text-align: left;
+}
+.download-options-list > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 10px;
+  border-radius: 5px;
+}
+.download-options-list > a:hover {
   background: #eef2e9;
-  color: #24654e;
-  min-height: 52px;
-  padding-inline: 22px;
+}
+.download-options-list > a > span {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #8c9a7f;
 }
 .hero-char {
   white-space: pre;

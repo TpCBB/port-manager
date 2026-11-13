@@ -1,0 +1,64 @@
+---
+import Icon from './Icon.astro';
+import {
+  download,
+  downloadWindows,
+  downloadWindowsZip,
+  release,
+} from '../data/product';
+
+interface Props {
+  compact?: boolean;
+  alternatives?: boolean;
+}
+const { compact = false, alternatives = true } = Astro.props;
+---
+
+<a
+  class:list={['button', compact ? 'button-small' : 'button-primary']}
+  href={release}
+  data-platform-download
+  data-compact={compact ? 'true' : undefined}
+>
+  {!compact && (
+    <>
+      <span data-platform-icon="macos" hidden>
+        <svg
+          width="19"
+          height="21"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M17.1 12.3c0-2 1.6-3 1.7-3.1-1-1.5-2.5-1.7-3.1-1.7-1.3-.2-2.6.8-3.2.8-.7 0-1.7-.8-2.8-.8-1.5 0-2.8.8-3.6 2.1-1.5 2.6-.4 6.5 1 8.6.7 1 1.5 2.1 2.6 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2 .8-1.1 1.1-2.2 1.2-2.3-.1 0-2-.8-2-3.7ZM15 6.1c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.8 1.4-.6.7-1.2 1.8-1.1 2.9 1.1.1 2.2-.6 2.9-1.3Z" />
+        </svg>
+      </span>
+      <span data-platform-icon="windows" hidden>
+        <Icon name="windows" size={18} />
+      </span>
+    </>
+  )}
+  <span data-download-label>{compact ? '免费下载' : '选择下载版本'}</span>
+  <Icon name="down" size={compact ? 15 : 18} />
+</a>
+{alternatives && (
+  <details class="download-options">
+    <summary>
+      其他版本 <Icon name="plus" size={13} />
+    </summary>
+    <div class="download-options-list">
+      <a href={download}>
+        macOS · Apple Silicon <span>DMG</span>
+      </a>
+      <a href={downloadWindows}>
+        Windows · x64 <span>EXE</span>
+      </a>
+      <a href={downloadWindowsZip}>
+        Windows 便携包 <span>ZIP</span>
+      </a>
+      <a href={release}>
+        所有下载与校验文件 <Icon name="arrow" size={13} />
+      </a>
+    </div>
+  </details>
+)}
