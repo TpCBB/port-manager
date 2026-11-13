@@ -46,7 +46,9 @@ The menu bar screenshot shows the actual interface. Ports, process names and PID
 
 ## Requirements
 
-**Apple Silicon · macOS 13 (Ventura) or later.** The interface is currently in Simplified Chinese. Intel Mac, Windows and Linux are not supported.
+**macOS:** Apple Silicon and macOS 13 (Ventura) or later. The interface is currently in Simplified Chinese. Intel Mac and Linux are not supported.
+
+**Windows preview:** Build from source on 64-bit Windows; see the [Windows guide](Windows/README.md). The existing macOS download does not run on Windows.
 
 ## Install
 

@@ -46,7 +46,9 @@
 
 ## 系统要求
 
-**Apple Silicon Mac · macOS 13 (Ventura) 或更高版本。** 界面目前为简体中文。暂不支持 Intel Mac、Windows 和 Linux。
+**macOS 版：** Apple Silicon Mac · macOS 13 (Ventura) 或更高版本。界面目前为简体中文。暂不支持 Intel Mac 和 Linux。
+
+**Windows 预览版：** 64 位 Windows，可从源码构建，详见 [Windows 使用和构建说明](Windows/README.md)。现有 macOS 下载包不能在 Windows 上运行。
 
 ## 安装
 
