@@ -861,8 +861,7 @@
 .download-options-list {
   position: absolute;
   top: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
+  right: 0;
   width: 255px;
   padding: 7px;
   border: 1px solid #d6e1cd;
