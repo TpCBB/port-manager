@@ -294,6 +294,7 @@ function renderScene() {
     process: tenant.process,
     pid: tenant.pid,
     command: tenant.command,
+    directory: tenant.directory,
     quote: tenant.quote,
     stamp: tenant.stamp,
   };
@@ -309,20 +310,20 @@ function renderScene() {
   const icon = playground.querySelector<HTMLElement>('.occupant-icon');
   const command = playground.querySelector<HTMLElement>('.occupant-command');
   const caption = playground.querySelector<HTMLElement>('.free-port-caption');
-  if (name) name.textContent = '不明住户';
+  if (name) name.textContent = '待确认的服务';
   if (icon) icon.textContent = '?';
-  if (command) command.textContent = '身份：待认领';
+  if (command) command.textContent = '来源：待查看';
   if (caption)
-    caption.textContent = `查到了，是 ${tenant.process}。确认后，请出去了。`;
+    caption.textContent = `示例：确认后结束 ${tenant.process}，重新扫描端口。`;
   if (sceneState === 'free') identifyTenant();
   sceneButton.disabled = false;
   playground.dataset.animating = 'false';
   sceneLabel.textContent =
-    sceneState === 'free' ? '怎么又有了？' : '查查谁住这儿';
+    sceneState === 'free' ? '再看一个服务' : '演示查看与结束';
   sceneStatus.textContent =
     sceneState === 'free'
-      ? `是 ${tenant.process} 占着 :${tenant.port}。查清、确认、送走。`
-      : `本人没开，:${tenant.port} 已有人。户口待查。`;
+      ? `示例：已确认并结束 ${tenant.process}，:${tenant.port} 已释放。`
+      : `示例：:${tenant.port} 正在运行，先核对是哪个项目。`;
   playground
     .querySelectorAll<HTMLElement>(
       '.occupant-motion, .inspector-ticket, .free-port, .port-socket, .socket-ring, .scene-particle, .wild-port',
@@ -360,10 +361,12 @@ media.add(
       sceneButton.disabled = true;
       playground.dataset.animating = 'true';
       notifyScene('port-manager:scene-start');
-      sceneLabel.textContent = reset ? '不是，又来一个…' : '正在查户口…';
+      sceneLabel.textContent = reset
+        ? '查看下一个服务…'
+        : '正在演示查看与结束…';
       sceneStatus.textContent = reset
-        ? `你：什么都没开。:${tenants[tenantIndex].port}：又有人了。`
-        : '不是端口成精了，先看看是哪个进程。';
+        ? `示例：换一个项目，查看 :${tenants[tenantIndex].port} 的服务。`
+        : '示例：查看命令和目录，确认结束，再扫描端口。';
       const timeline = gsap.timeline({
         onComplete: renderScene,
         defaults: { ease: 'power2.out' },

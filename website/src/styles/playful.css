@@ -823,3 +823,52 @@
     stroke-dashoffset: 0;
   }
 }
+
+/* Keep both platform downloads visible at narrow widths. */
+.hero-actions,
+.platform-downloads {
+  flex-wrap: wrap;
+}
+.platform-downloads {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+.button-windows {
+  border: 1px solid #a5b699;
+  background: #eef2e9;
+  color: #24654e;
+  min-height: 52px;
+  padding-inline: 22px;
+}
+.hero-char {
+  white-space: pre;
+}
+@media (max-width: 767px) {
+  .hero-actions {
+    gap: 12px;
+  }
+  .hero-actions > .button {
+    flex: 1 1 145px;
+    padding-inline: 12px;
+    font-size: 11px;
+  }
+  .hero-actions > .text-link {
+    flex-basis: 100%;
+    justify-content: center;
+  }
+  .system-note > span {
+    display: block;
+    margin: 6px 0 0;
+    padding: 0;
+    border: 0;
+  }
+  .platform-downloads {
+    gap: 10px;
+    width: 100%;
+  }
+  .platform-downloads > .button {
+    min-width: 180px;
+  }
+}

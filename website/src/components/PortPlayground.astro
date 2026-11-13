@@ -7,17 +7,17 @@ const firstTenant = tenants[0];
 <div class="port-playground" data-state="busy">
   <div class="playground-topline">
     <span class="mono">
-      <span class="status-dot"></span> LOCALHOST 野生住户登记处
+      <span class="status-dot"></span> LOCALHOST 本地服务工作台
     </span>
-    <span>纯属演示，不动你电脑里的进程</span>
+    <span>macOS 功能示意，不操作本机进程</span>
   </div>
   <div class="playground-scene">
     <div class="scene-orbit" aria-hidden="true"></div>
     <span class="wild-port wild-port-one" aria-hidden="true">
-      野生进程 +1
+      本地服务 +1
     </span>
     <span class="wild-port wild-port-two" aria-hidden="true">
-      不是，我请你了吗？
+      这个是哪个项目？
     </span>
     <div class="port-socket" aria-hidden="true">
       <span class="socket-caption mono">YOUR PORT</span>
@@ -25,8 +25,8 @@ const firstTenant = tenants[0];
         :{firstTenant.port}
       </span>
       <span class="socket-ring"></span>
-      <span class="socket-note">钥匙在我手里，里面却有人。</span>
-      <span class="socket-drop-label">拖到这儿，查户口</span>
+      <span class="socket-note">端口知道了，项目还没对上。</span>
+      <span class="socket-drop-label">拖到这儿，看来源</span>
     </div>
     <div class="occupant-motion">
       <div class="occupant-drag-shell">
@@ -35,27 +35,27 @@ const firstTenant = tenants[0];
             class="occupant-drag-handle"
             data-manual-sound
             type="button"
-            aria-label="查这个住户的户口"
+            aria-label="查看这个服务的来源演示"
             aria-describedby="playground-hint"
             disabled
           >
             <span class="drag-handle-dots" aria-hidden="true">
               ⠿
             </span>
-            <span>这位住户，拎得动</span>
+            <span>拖动服务，看来源</span>
             <Icon name="arrow" size={12} />
           </button>
           <div class="occupant-head">
             <span class="process-icon node-icon occupant-icon">?</span>
-            <span class="mono occupant-name">不明住户</span>
-            <span class="occupant-badge">房东：没印象</span>
+            <span class="mono occupant-name">待确认的服务</span>
+            <span class="occupant-badge">项目待核对</span>
           </div>
           <strong data-tenant-quote>{firstTenant.quote}</strong>
           <p class="mono">
-            <span class="occupant-command">身份：待认领</span>
-            <span>· 本人不知情</span>
+            <span class="occupant-command">来源：待查看</span>
+            <span>· 示例服务</span>
           </p>
-          <span class="occupant-speech">（主打一个，不请自来）</span>
+          <span class="occupant-speech">（页面关了，服务还在跑）</span>
           <span class="occupant-stamp" aria-hidden="true">
             <span data-tenant-stamp>{firstTenant.stamp}</span>
           </span>
@@ -64,10 +64,10 @@ const firstTenant = tenants[0];
     </div>
     <div class="inspector-ticket" aria-hidden="true">
       <span class="inspector-caption">
-        <Icon name="search" size={14} /> 查到户口了
+        <Icon name="search" size={14} /> 查看进程来源
       </span>
       <div>
-        <span>住户</span>
+        <span>进程</span>
         <strong class="mono" data-tenant-process>
           {firstTenant.process}
         </strong>
@@ -89,6 +89,16 @@ const firstTenant = tenants[0];
         </strong>
       </div>
       <div>
+        <span>目录</span>
+        <strong
+          class="mono inspector-command"
+          data-tenant-directory
+          title={firstTenant.directory}
+        >
+          {firstTenant.directory}
+        </strong>
+      </div>
+      <div>
         <span>占用端口</span>
         <strong class="mono" data-tenant-port>
           :{firstTenant.port}
@@ -103,8 +113,10 @@ const firstTenant = tenants[0];
       <span class="mono" data-tenant-port>
         :{firstTenant.port}
       </span>
-      <strong>户口查清，位置腾出。</strong>
-      <span class="free-port-caption">查到了，是 node。确认后，请出去了。</span>
+      <strong>进程已结束，端口已释放。</strong>
+      <span class="free-port-caption">
+        示例：确认后结束 node，重新扫描端口。
+      </span>
     </div>
     <div class="scene-particles" aria-hidden="true">
       {Array.from({ length: 10 }, (_, i) => (
@@ -116,13 +128,13 @@ const firstTenant = tenants[0];
     <div class="scene-message">
       <span class="status-dot"></span>
       <p id="scene-status" role="status" aria-live="polite">
-        本人没开，:3000 已有人。户口待查。
+        示例：:3000 正在运行，先核对是哪个项目。
       </p>
     </div>
     <div class="playground-actions">
       <button class="button scene-nudge" type="button" disabled>
         <Icon name="terminal" size={15} />
-        <span>拍桌查房</span>
+        <span>提醒一下</span>
       </button>
       <button
         class="button scene-button"
@@ -130,17 +142,17 @@ const firstTenant = tenants[0];
         aria-describedby="scene-status"
         disabled
       >
-        <span class="scene-button-label">查查谁住这儿</span>
+        <span class="scene-button-label">演示查看与结束</span>
         <Icon name="arrow" size={16} />
       </button>
     </div>
   </div>
   <p class="playground-hint" id="playground-hint">
-    点按钮查户口，也可以拍桌子和住户打个招呼。
+    点按钮演示查看来源、确认结束和重新扫描。
   </p>
   <noscript>
     <p class="playground-fallback">
-      互动小剧场暂不可用，产品介绍和下载照常营业。
+      互动演示暂不可用，仍可查看产品介绍和下载应用。
     </p>
   </noscript>
 </div>

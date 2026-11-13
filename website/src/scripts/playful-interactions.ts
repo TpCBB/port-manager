@@ -136,8 +136,8 @@ let discardPointerClick = false;
 const quips = [
   '端口：人在，勿扰。',
   '别拍了，监听还没停。',
-  '住户：我就再待一小会儿。',
-  '房东都来了，还装没看见？',
+  '服务：上个项目，我还在跑。',
+  '预览看完了，服务还没下班。',
 ];
 motion.add(
   {
@@ -203,9 +203,9 @@ motion.add(
       else drag?.disable();
       hint.textContent =
         animated && occupied()
-          ? '拎住卡片上方的把手，拖到左边查户口。懒得拖？直接点按钮。'
-          : '点按钮查户口，也可以拍桌子和住户打个招呼。';
-      speech.textContent = '（主打一个，不请自来）';
+          ? '拖动卡片到左边查看来源，或点按钮演示完整流程。'
+          : '点按钮演示查看来源、确认结束和重新扫描。';
+      speech.textContent = '（页面关了，服务还在跑）';
     });
     context.add('start', () => {
       bounced?.kill();
@@ -298,7 +298,7 @@ motion.add(
         dragged = true;
         discardPointerClick = true;
         playground.dataset.dragging = 'true';
-        speech.textContent = '这位住户，正在被房东拎走。';
+        speech.textContent = '拖到左侧，查看这个服务的来源。';
       });
       context.add('dragMove', () => {
         if (!drag) return;

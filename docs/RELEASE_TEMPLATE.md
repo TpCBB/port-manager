@@ -16,13 +16,15 @@
 
 - **DMG** — `PortManager-X.Y.Z-mac-arm64.dmg`，拖入「应用程序」安装。
 - **ZIP** — `PortManager.zip`，解压后移入「应用程序」。
-- **SHA-256** — 下载对应 `.sha256` 文件校验。
+- **Windows EXE** — `PortManager-X.Y.Z-win-x64.exe`，直接运行。
+- **Windows ZIP** — `PortManager-X.Y.Z-win-x64.zip`，解压后运行 `PortManager.exe`。
+- **SHA-256** — 四个下载均有对应 `.sha256` 文件校验。
 
 ### Requirements · 系统要求
 
-Apple Silicon Mac · macOS 13+。界面为简体中文。
+macOS：Apple Silicon Mac · macOS 13+。Windows：x64 · .NET Framework 4.x。界面为简体中文。
 
-> 预览版，临时签名，未经过 Apple Developer ID 签名或公证。确认来源后，按 macOS「隐私与安全性」中的提示打开。列明尚未完成的验收。
+> 预览版。macOS 临时签名，未经过 Apple Developer ID 签名或公证；Windows EXE 未签名。确认来源后，按系统提示处理。列明尚未完成的验收和平台差异。
 
 <details>
 <summary>English release notes</summary>

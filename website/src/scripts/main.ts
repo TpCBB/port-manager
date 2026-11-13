@@ -31,9 +31,9 @@ function updateDemo() {
       status.textContent =
         query || protocol !== 'all'
           ? shown > 0
-            ? `逮到 ${shown} 个。查房名单已更新。`
-            : '查无此人。这回真没藏。'
-          : '名单是演的。你可以真搜。';
+            ? `找到 ${shown} 个匹配端口。示例列表已更新。`
+            : '没有匹配的端口，试试其他关键词。'
+          : '示例数据，可搜索端口、PID、应用或命令。';
   });
 }
 

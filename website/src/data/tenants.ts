@@ -6,8 +6,9 @@ export const tenants = [
     icon: 'N',
     pid: '4281',
     command: 'npm run dev',
-    quote: '你没开，不耽误我在。',
-    stamp: '自行入住',
+    directory: '/projects/storefront',
+    quote: '上一个项目，我还在跑。',
+    stamp: '前端预览',
   },
   {
     port: '5173',
@@ -15,7 +16,8 @@ export const tenants = [
     icon: 'ϟ',
     pid: '4390',
     command: 'vite --host',
-    quote: '窗口关了，我又没关。',
+    directory: '/projects/admin-panel',
+    quote: '页面关了，服务还没停。',
     stamp: '还在监听',
   },
   {
@@ -24,7 +26,8 @@ export const tenants = [
     icon: 'Py',
     pid: '5102',
     command: 'python3 -m http.server',
-    quote: '这位置，我先替你占着。',
-    stamp: '房东不知情',
+    directory: '/projects/docs-preview',
+    quote: '临时预览，用完记得关。',
+    stamp: '临时服务',
   },
 ];
