@@ -40,3 +40,5 @@ git push origin vX.Y.Z
 发布附件可下载且已核验后，在 `website/` 运行 `npm run deploy:check` 和 `npm run deploy`，检查官网两个平台的下载入口，避免先上线尚不存在的链接。
 
 macOS 当前使用临时签名，没有 Apple Developer ID 签名或公证；Windows EXE 未签名。正式签名需单独配置，凭证不得进入仓库。
+
+包含客户端下载功能的构建会从公开 Releases 中按版本号筛选本平台附件：需保持上述 DMG / EXE 命名，上传状态为 `uploaded`，GitHub API 提供有效的 `size` 与 `sha256:` digest。预览版同样可用。无需另外推送通知；v1.3.0 用户仍需手动升级一次。发布前用上一版带更新功能的客户端验收「出现提示 → 下载 → 校验 → 打开安装包或所在文件夹」，不要自动运行 EXE 或覆盖旧版。

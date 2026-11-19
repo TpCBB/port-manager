@@ -10,10 +10,10 @@
 [![macOS](https://img.shields.io/badge/macOS-13%2B-172C33?logo=apple&logoColor=white)](https://github.com/TpCBB/port-manager/releases)
 [![License](https://img.shields.io/github/license/TpCBB/port-manager)](LICENSE)
 
-  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.3.0"><strong>下载 macOS / Windows 预览版 ↗</strong></a> · <a href="https://port-manager.tpc28yo.xyz/">官网 ↗</a> · <a href="#功能">功能介绍</a> · <a href="CHANGELOG.md">更新记录</a></p>
+  <p><a href="https://github.com/TpCBB/port-manager/releases/tag/v1.4.0"><strong>下载 macOS / Windows 预览版 ↗</strong></a> · <a href="https://port-manager.tpc28yo.xyz/">官网 ↗</a> · <a href="#功能">功能介绍</a> · <a href="CHANGELOG.md">更新记录</a></p>
   <p>简体中文 · <a href="README.en.md">English</a></p>
 
-  <a href="https://github.com/TpCBB/port-manager/releases/tag/v1.3.0"><img src="assets/preview.png" alt="端口管家产品预览：端口主窗口与菜单栏快捷面板" width="100%"></a>
+  <a href="https://github.com/TpCBB/port-manager/releases/tag/v1.4.0"><img src="assets/preview.png" alt="端口管家产品预览：端口主窗口与菜单栏快捷面板" width="100%"></a>
 </div>
 
 Agent 同时跑了几个项目，3000、5173、8080 都在用。想关掉不再需要的服务，还得翻终端、查端口、找 PID，再结束进程？端口管家把端口、进程和启动命令放在一起，先核对来源，再确认结束。macOS 和 Windows 各有原生客户端，信息在本机处理。
@@ -21,6 +21,8 @@ Agent 同时跑了几个项目，3000、5173、8080 都在用。想关掉不再�
 目前不会自动识别 Agent 会话或按项目分组，也不提供一键结束整个项目。
 
 ## 功能
+
+发现新版时，可以直接在客户端下载安装包并核验 SHA-256，不会自动覆盖旧版本。已安装 v1.3.0 的用户需先手动升级一次。
 
 ### macOS
 
@@ -65,7 +67,7 @@ Agent 同时跑了几个项目，3000、5173、8080 都在用。想关掉不再�
 
 ### macOS
 
-1. 从 [v1.3.0 发布页](https://github.com/TpCBB/port-manager/releases/tag/v1.3.0) 下载 **`PortManager-1.3.0-mac-arm64.dmg`**。
+1. 从 [v1.4.0 发布页](https://github.com/TpCBB/port-manager/releases/tag/v1.4.0) 下载 **`PortManager-1.4.0-mac-arm64.dmg`**。
 2. 打开安装包，将 **「端口管家」拖入「应用程序」**。
 3. 打开应用。当前预览版使用临时签名，尚未经过 Apple Developer ID 签名或公证；如果 macOS 阻止打开，请先确认下载来源，再按「系统设置 → 隐私与安全性」中的提示允许打开。
 
@@ -77,7 +79,7 @@ Agent 同时跑了几个项目，3000、5173、8080 都在用。想关掉不再�
 将安装文件和对应的 `.sha256` 文件放在同一目录，在该目录运行：
 
 ```sh
-shasum -a 256 -c PortManager-1.3.0-mac-arm64.dmg.sha256
+shasum -a 256 -c PortManager-1.4.0-mac-arm64.dmg.sha256
 # 或校验 ZIP
 shasum -a 256 -c PortManager.zip.sha256
 ```
@@ -88,10 +90,10 @@ shasum -a 256 -c PortManager.zip.sha256
 
 ### Windows
 
-从 [v1.3.0 发布页](https://github.com/TpCBB/port-manager/releases/tag/v1.3.0) 下载 `PortManager-1.3.0-win-x64.exe` 直接运行，或下载同名 ZIP 解压后运行 `PortManager.exe`。无需安装服务，EXE 未签名；如被系统拦截，请先核对发布来源与 SHA-256。
+从 [v1.4.0 发布页](https://github.com/TpCBB/port-manager/releases/tag/v1.4.0) 下载 `PortManager-1.4.0-win-x64.exe` 直接运行，或下载同名 ZIP 解压后运行 `PortManager.exe`。无需安装服务，EXE 未签名；如被系统拦截，请先核对发布来源与 SHA-256。
 
 ```powershell
-Get-FileHash .\PortManager-1.3.0-win-x64.exe -Algorithm SHA256
+Get-FileHash .\PortManager-1.4.0-win-x64.exe -Algorithm SHA256
 ```
 
 将结果与对应 `.sha256` 文件里的值核对。Windows 无主窗口的开发服务不能通过「请求关闭」正常退出，需要核对后选择「强制结束」。

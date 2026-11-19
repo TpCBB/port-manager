@@ -11,13 +11,14 @@ mkdir -p "$app_path/Contents/MacOS" "$app_path/Contents/Resources"
 xcrun swift "$task_root/scripts/icon.swift" "$task_root/dist/AppIcon.iconset"
 /usr/bin/iconutil -c icns "$task_root/dist/AppIcon.iconset" -o "$task_root/dist/AppIcon.icns"
 xcrun swiftc -swift-version 5 -O -parse-as-library \
-  "$task_root/Sources/PortService.swift" "$task_root/Sources/ProcessOrigin.swift" "$task_root/Sources/PortManagerApp.swift" \
+  "$task_root/Sources/ReleaseUpdates.swift" "$task_root/Sources/PortService.swift" "$task_root/Sources/ProcessOrigin.swift" "$task_root/Sources/PortManagerApp.swift" \
   -target arm64-apple-macosx13.0 -framework SwiftUI -framework AppKit \
   -o "$app_path/Contents/MacOS/PortManager"
 cat > "$app_path/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
+  <key>LSFileQuarantineEnabled</key><true/>
   <key>CFBundleExecutable</key><string>PortManager</string>
   <key>CFBundleIdentifier</key><string>local.tpc.port-manager</string>
   <key>CFBundleName</key><string>端口管家</string>

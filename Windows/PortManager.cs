@@ -252,6 +252,13 @@ class MainForm : Form
     Button refresh, graceful, force;
     NotifyIcon tray;
     System.Windows.Forms.Timer timer;
+    readonly System.Windows.Forms.Timer updateTimer = new System.Windows.Forms.Timer { Interval = 86400000 };
+    ToolStripItem newRelease, checkUpdates;
+    LinkLabel updateLink;
+    ReleaseUpdates.Package availablePackage;
+    string downloaded;
+    bool downloading;
+    bool checkingUpdates;
     bool loading, exiting;
     int detailsVersion;
     List<PortRecord> records = new List<PortRecord>();
@@ -274,6 +281,9 @@ class MainForm : Form
         Controls.Add(top);
         top.Controls.Add(new Label { Text = "端口管家", Font = new Font("Microsoft YaHei UI", 17, FontStyle.Bold), AutoSize = true, Location = new Point(18, 8) });
         top.Controls.Add(new Label { Text = "查看端口和进程来源", AutoSize = true, ForeColor = Color.DimGray, Location = new Point(150, 20) });
+        updateLink = new LinkLabel { AutoSize = true, Location = new Point(350, 20), Visible = false };
+        updateLink.LinkClicked += (s, e) => DownloadOrReveal();
+        top.Controls.Add(updateLink);
         search = new TextBox
         {
             Location = new Point(18, 63),
@@ -382,6 +392,9 @@ class MainForm : Form
         var menu = new ContextMenuStrip();
         menu.Items.Add("打开端口管家", null, (s, e) => ShowWindow());
         menu.Items.Add("刷新", null, (s, e) => Reload());
+        newRelease = menu.Items.Add("有新版本", null, (s, e) => DownloadOrReveal());
+        newRelease.Visible = false;
+        checkUpdates = menu.Items.Add("检查更新", null, (s, e) => CheckUpdates(true));
         menu.Items.Add("退出", null, (s, e) => ExitApp());
         tray = new NotifyIcon
         {
@@ -401,6 +414,7 @@ class MainForm : Form
             }
             else
             {
+                updateTimer.Dispose();
                 tray.Visible = false;
                 tray.Dispose();
             }
@@ -411,7 +425,84 @@ class MainForm : Form
         };
         timer.Tick += (s, e) => Reload();
         timer.Start();
-        Shown += (s, e) => Reload();
+        updateTimer.Tick += (s, e) => CheckUpdates(false);
+        Shown += (s, e) => { Reload(); updateTimer.Start(); CheckUpdates(false); };
+    }
+
+    async void CheckUpdates(bool manual)
+    {
+        if (checkingUpdates || downloading) return;
+        checkingUpdates = true;
+        checkUpdates.Enabled = newRelease.Enabled = updateLink.Enabled = false;
+        checkUpdates.Text = "正在检查…";
+        string feedback;
+        bool offerDownload = false;
+        try
+        {
+            string installed = typeof(MainForm).Assembly.GetName().Version.ToString(3);
+            var next = await ReleaseUpdates.Check(installed);
+            string version = next == null ? null : next.Version;
+            if (IsDisposed || Disposing || exiting) return;
+            if (next == null || availablePackage == null || next.Version != availablePackage.Version || next.Hash != availablePackage.Hash) downloaded = null;
+            availablePackage = next;
+            newRelease.Visible = updateLink.Visible = version != null;
+            updateLink.Text = newRelease.Text = downloaded == null ? "下载新版 v" + version : "打开已校验文件所在文件夹";
+            tray.Text = version == null ? "端口管家" : "端口管家 · 有新版 v" + version;
+            offerDownload = version != null && downloaded == null;
+            feedback = version == null ? "当前 v" + installed + " 已是最新版本。" : "发现新版 v" + version + (downloaded == null ? "，现在下载吗？" : "，已下载并校验。");
+        }
+        catch (Exception) { feedback = "无法检查更新，请稍后重试。"; }
+        finally
+        {
+            checkingUpdates = false;
+            if (!IsDisposed && !Disposing && !exiting) { checkUpdates.Text = "检查更新"; checkUpdates.Enabled = newRelease.Enabled = updateLink.Enabled = true; }
+        }
+        if (!manual || IsDisposed || Disposing || exiting) return;
+        if (offerDownload)
+        {
+            if (MessageBox.Show(feedback, "端口管家", MessageBoxButtons.YesNo) == DialogResult.Yes) DownloadOrReveal();
+        }
+        else MessageBox.Show(feedback, "端口管家");
+    }
+
+    async void DownloadOrReveal()
+    {
+        if (checkingUpdates || downloading || availablePackage == null) return;
+        if (File.Exists(downloaded)) { RevealDownload(); return; }
+        downloaded = null;
+        downloading = true;
+        checkUpdates.Enabled = newRelease.Enabled = updateLink.Enabled = false;
+        tray.Text = updateLink.Text = newRelease.Text = "下载中 0%";
+        try
+        {
+            var progress = new Progress<int>(p => {
+                if (downloading && !IsDisposed && !Disposing && !exiting) tray.Text = updateLink.Text = newRelease.Text = "下载中 " + p + "%";
+            });
+            downloaded = await ReleaseUpdates.Download(availablePackage, progress);
+            if (IsDisposed || Disposing || exiting) return;
+            updateLink.Text = newRelease.Text = "打开已校验文件所在文件夹";
+            tray.Text = "端口管家 · 新版已下载";
+            if (MessageBox.Show("下载和 SHA-256 校验完成。打开文件夹手动更新？", "端口管家", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                RevealDownload();
+        }
+        catch (Exception ex)
+        {
+            if (IsDisposed || Disposing || exiting) return;
+            tray.Text = "端口管家 · 下载失败";
+            updateLink.Text = newRelease.Text = "重新下载 v" + availablePackage.Version;
+            MessageBox.Show(ex is InvalidDataException ? "安装包校验失败，文件已丢弃。" : "下载失败，请检查网络和存储空间后重试。", "端口管家");
+        }
+        finally
+        {
+            downloading = false;
+            if (!IsDisposed && !Disposing && !exiting) checkUpdates.Enabled = newRelease.Enabled = updateLink.Enabled = true;
+        }
+    }
+
+    void RevealDownload()
+    {
+        try { Process.Start("explorer.exe", "/select,\"" + downloaded + "\""); }
+        catch (System.ComponentModel.Win32Exception) { MessageBox.Show("文件保存在：" + downloaded, "端口管家"); }
     }
 
     void ShowWindow()
@@ -628,9 +719,9 @@ static class Program
     [STAThread]
     static void Main(string[] args)
     {
-        if (args.Length == 2 && args[0] == "--self-test")
+        if (args.Length == 3 && args[0] == "--self-test")
         {
-            SelfTest(args[1]);
+            SelfTest(args[1], args[2]);
             return;
         }
 
@@ -649,7 +740,7 @@ static class Program
         Application.Run(new MainForm());
     }
 
-    static void SelfTest(string path)
+    static void SelfTest(string path, string fixture)
     {
         var log = new List<string>();
         TcpListener tcp = null;
@@ -658,6 +749,25 @@ static class Program
         string flag = path + ".child";
         try
         {
+            var releases = ReleaseUpdates.Decode(File.ReadAllText(fixture));
+            if (ReleaseUpdates.Newest(releases, "1.9.0").Version != "1.11.0" ||
+                ReleaseUpdates.Newest(releases, "1.11.0") != null || ReleaseUpdates.Newest(releases, "5.0.0") != null)
+                throw new Exception("更新版本或平台附件筛选错误");
+            log.Add("release_selection=true");
+            string parent = Directory.CreateDirectory(path + ".downloads").FullName;
+            try
+            {
+                var package = ReleaseUpdates.Newest(releases, "1.9.0");
+                foreach (string body in new[] { "abd", "ab", "abcd" })
+                {
+                    try { ReleaseUpdates.SaveVerified(package, new MemoryStream(Encoding.ASCII.GetBytes(body)), parent, p => {}); throw new Exception("接受了损坏的更新文件"); }
+                    catch (InvalidDataException) { if (Directory.GetFileSystemEntries(parent).Length != 0) throw; }
+                }
+                string verified = ReleaseUpdates.SaveVerified(package, new MemoryStream(Encoding.ASCII.GetBytes("abc")), parent, p => {});
+                if (File.ReadAllText(verified) != "abc" || Path.GetFileName(verified) != package.Name) throw new Exception("更新下载校验失败");
+                log.Add("verified_download=true");
+            }
+            finally { Directory.Delete(parent, true); }
             tcp = new TcpListener(IPAddress.Loopback, 0);
             tcp.Start();
             udp = new UdpClient(new IPEndPoint(IPAddress.Loopback, 0));

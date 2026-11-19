@@ -5,6 +5,7 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $outputDirectory = Join-Path $root 'dist\windows'
 $source = Join-Path $root 'Windows\PortManager.cs'
+$updates = Join-Path $root 'Windows\ReleaseUpdates.cs'
 $icon = Join-Path $root 'Windows\app.ico'
 $executable = Join-Path $outputDirectory 'PortManager.exe'
 $version = (Get-Content -LiteralPath (Join-Path $root 'VERSION') -Raw).Trim()
@@ -23,7 +24,7 @@ using System.Reflection;
 [assembly: AssemblyFileVersion("$version.0")]
 [assembly: AssemblyInformationalVersion("$version")]
 "@ | Set-Content -LiteralPath $versionSource -Encoding UTF8
-& $compiler /nologo /target:winexe /platform:x64 /optimize+ "/win32icon:$icon" "/out:$executable" /reference:System.Windows.Forms.dll /reference:System.Drawing.dll /reference:System.Management.dll $source $versionSource
+& $compiler /nologo /target:winexe /platform:x64 /optimize+ "/win32icon:$icon" "/out:$executable" /reference:System.Windows.Forms.dll /reference:System.Drawing.dll /reference:System.Management.dll /reference:System.Web.Extensions.dll $source $updates $versionSource
 if ($LASTEXITCODE -ne 0) { throw "Windows build failed with exit code $LASTEXITCODE" }
 if ((Get-Item -LiteralPath $executable).VersionInfo.FileVersion -ne "$version.0") {
     throw 'The executable version does not match VERSION.'
@@ -32,7 +33,8 @@ Write-Host "Built $executable"
 if ($Test) {
     $report = Join-Path ([System.IO.Path]::GetTempPath()) ("port-manager-test-" + [Guid]::NewGuid().ToString('N') + '.txt')
     try {
-        $process = Start-Process -FilePath $executable -ArgumentList @('--self-test', ('"' + $report + '"')) -PassThru -Wait
+        $fixture = Join-Path $root 'Tests\update-releases.json'
+        $process = Start-Process -FilePath $executable -ArgumentList @('--self-test', ('"' + $report + '"'), ('"' + $fixture + '"')) -PassThru -Wait
         if (Test-Path -LiteralPath $report) { Get-Content -LiteralPath $report -Encoding UTF8 }
         if ($process.ExitCode -ne 0) { throw "Windows self-test failed with exit code $($process.ExitCode)" }
         if (-not (Test-Path -LiteralPath $report)) { throw 'Windows self-test did not produce a report.' }

@@ -119,6 +119,71 @@ final class PortModel: ObservableObject {
     }
 }
 
+@MainActor
+final class UpdateModel: ObservableObject {
+    let installed = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "未知"
+    @Published private(set) var available: UpdatePackage?
+    @Published private(set) var percent: Int?
+    @Published private(set) var file: URL?
+    @Published private(set) var checking = false
+    @Published private(set) var feedback: String?
+
+    func check(manual: Bool = false) async {
+        guard !checking, percent == nil else { return }
+        checking = true
+        feedback = nil
+        defer { checking = false }
+        do {
+            let next = try await PublishedRelease.check(installed: installed)
+            if next != available { file = nil }
+            available = next
+            if manual && available == nil { feedback = "已是最新版本" }
+        } catch {
+            if manual { feedback = "无法检查，请稍后重试" }
+        }
+    }
+    func download() async {
+        guard let package = available, !checking, percent == nil else { return }
+        percent = 0; feedback = nil; file = nil
+        defer { percent = nil }
+        do {
+            let downloads = try FileManager.default.url(for: .downloadsDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            file = try await package.download(into: downloads) { value in await self.showProgress(value) }
+        } catch UpdateError.integrity { feedback = "校验失败，文件已丢弃。请重试。" }
+        catch { feedback = "下载失败，请检查网络与下载目录后重试。" }
+    }
+
+    private func showProgress(_ value: Int) { percent = value }
+    func openDownloaded() {
+        guard let file else { return }
+        guard FileManager.default.fileExists(atPath: file.path) else {
+            self.file = nil; feedback = "文件已移动，可重新下载。"; return
+        }
+        if !NSWorkspace.shared.open(file) { NSWorkspace.shared.activateFileViewerSelecting([file]) }
+    }
+}
+
+struct UpdateControls: View {
+    @ObservedObject var updates: UpdateModel
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            if let percent = updates.percent {
+                ProgressView(value: Double(percent), total: 100)
+                Text("下载中 \(percent)%")
+            } else if updates.file != nil {
+                Button("打开已校验的安装包") { updates.openDownloaded() }
+            } else if let package = updates.available {
+                Button { Task { await updates.download() } } label: {
+                    Label("下载新版 v\(package.version)", systemImage: "arrow.down.circle.fill")
+                }.buttonStyle(.plain).foregroundStyle(.mint).disabled(updates.checking)
+            }
+            Button(updates.checking ? "正在检查…" : "检查更新") { Task { await updates.check(manual: true) } }
+                .buttonStyle(.plain).disabled(updates.checking || updates.percent != nil)
+            if let feedback = updates.feedback { Text(feedback) }
+        }.font(.caption)
+    }
+}
+
 @main
 struct PortManagerApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -135,7 +200,7 @@ struct PortManagerApp: App {
         }
     }
     var body: some Scene {
-        Window("端口管家", id: "main") { ContentView() }
+        Window("端口管家", id: "main") { ContentView(updates: appDelegate.updates) }
             .defaultSize(width: 1120, height: 740)
             .commands {
                 CommandGroup(replacing: .newItem) {}
@@ -146,7 +211,7 @@ struct PortManagerApp: App {
                 }
             }
         MenuBarExtra("端口管家", systemImage: "network") {
-            MenuBarContent {
+            MenuBarContent(updates: appDelegate.updates) {
                 openWindow(id: "main")
                 NSApp.activate(ignoringOtherApps: true)
             }
@@ -155,8 +220,19 @@ struct PortManagerApp: App {
     }
 }
 
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    let updates = UpdateModel()
+    private var periodicCheck: Task<Void, Never>?
+
+    func applicationWillTerminate(_ notification: Notification) { periodicCheck?.cancel() }
     func applicationDidFinishLaunching(_ notification: Notification) {
+        periodicCheck = Task {
+            while !Task.isCancelled {
+                await updates.check()
+                do { try await Task.sleep(nanoseconds: 86_400_000_000_000) } catch { break }
+            }
+        }
         NSApp.setActivationPolicy(.regular)
         NSApp.activate(ignoringOtherApps: true)
     }
@@ -165,6 +241,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
 
 struct MenuBarContent: View {
+    @ObservedObject var updates: UpdateModel
     @StateObject private var model = PortModel()
     let openMain: () -> Void
 
@@ -203,6 +280,7 @@ struct MenuBarContent: View {
                     }
                 }.frame(height: 300)
             }
+            UpdateControls(updates: updates)
             Text(model.notice).font(.caption)
                 .foregroundStyle(model.isError ? Color.orange : Color.secondary).textSelection(.enabled)
             Divider()
@@ -222,6 +300,7 @@ struct MenuBarContent: View {
 }
 
 struct ContentView: View {
+    @ObservedObject var updates: UpdateModel
     @StateObject private var model = PortModel()
     @AppStorage("autoRefresh") private var autoRefresh = true
     private let timer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
@@ -295,7 +374,8 @@ struct ContentView: View {
                 Label("只在本机运行", systemImage: "desktopcomputer").font(.system(size: 12))
                 Text("TCP 监听 · UDP 绑定\n当前用户权限可见的端口")
                     .font(.system(size: 11)).foregroundStyle(.white.opacity(0.4)).lineSpacing(5)
-                Text("v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "未知")").font(.system(size: 10, design: .monospaced)).foregroundStyle(.white.opacity(0.3)).padding(.top, 8)
+                Text("v\(updates.installed)").font(.system(size: 10, design: .monospaced)).foregroundStyle(.white.opacity(0.3)).padding(.top, 8)
+                UpdateControls(updates: updates)
             }.padding(.horizontal, 10)
         }.padding(20).frame(width: 180).frame(maxHeight: .infinity)
             .background(Color(red: 0.09, green: 0.13, blue: 0.17)).foregroundStyle(.white)

@@ -1,6 +1,19 @@
 import Foundation
 import Darwin
 
+private final class PackageFixture: URLProtocol {
+    static var payload = Data(), status = 200
+    override class func canInit(with request: URLRequest) -> Bool { true }
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+    override func startLoading() {
+        let response = HTTPURLResponse(url: request.url!, statusCode: Self.status, httpVersion: nil, headerFields: nil)!
+        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+        client?.urlProtocol(self, didLoad: Self.payload)
+        client?.urlProtocolDidFinishLoading(self)
+    }
+    override func stopLoading() {}
+}
+
 @main
 struct PortServiceTests {
     static var checks = 0
@@ -39,7 +52,33 @@ struct PortServiceTests {
         return (task, ports[0], ports[1])
     }
 
-    static func main() throws {
+    static func main() async throws {
+        let feed = try Data(contentsOf: URL(fileURLWithPath: CommandLine.arguments[1]))
+        let releases = try JSONDecoder().decode([PublishedRelease].self, from: feed)
+        for (installed, expected) in [("1.9.0", "1.10.0"), ("1.10.0", nil), ("5.0.0", nil)] {
+            let found = try PublishedRelease.newest(in: releases, after: installed)
+            check(found?.version == expected, "macOS release selection from v\(installed)")
+        }
+        let package = try PublishedRelease.newest(in: releases, after: "1.9.0")!
+        let downloads = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: downloads, withIntermediateDirectories: false)
+        defer { try? FileManager.default.removeItem(at: downloads) }
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [PackageFixture.self]
+        for (body, status) in [("abd", 200), ("ab", 200), ("abcd", 200), ("abc", 404)] {
+            PackageFixture.payload = Data(body.utf8); PackageFixture.status = status
+            do {
+                _ = try await package.download(into: downloads, configuration: config) { _ in }
+                check(false, "Rejected invalid package")
+            } catch {
+                let entries = try FileManager.default.contentsOfDirectory(atPath: downloads.path)
+                check(entries.isEmpty, "Rejected invalid package and cleaned partial files (\(body), HTTP \(status))")
+            }
+        }
+        PackageFixture.payload = Data("abc".utf8); PackageFixture.status = 200
+        let file = try await package.download(into: downloads, configuration: config) { _ in }
+        let saved = try Data(contentsOf: file)
+        check(file.lastPathComponent == "PortManager-1.10.0-mac-arm64.dmg" && saved == PackageFixture.payload, "Saved only verified package")
         let fixtureText = """
         p99999
         ctest server

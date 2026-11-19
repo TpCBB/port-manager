@@ -4,13 +4,15 @@
 
 ## 下载与运行
 
-从 [v1.3.0 发布页](https://github.com/TpCBB/port-manager/releases/tag/v1.3.0) 下载：
+从 [v1.4.0 发布页](https://github.com/TpCBB/port-manager/releases/tag/v1.4.0) 下载：
 
-- `PortManager-1.3.0-win-x64.exe`：直接运行，无需安装。
-- `PortManager-1.3.0-win-x64.zip`：便携包，包含 EXE、许可证与说明，解压后运行 `PortManager.exe`。
+- `PortManager-1.4.0-win-x64.exe`：直接运行，无需安装。
+- `PortManager-1.4.0-win-x64.zip`：便携包，包含 EXE、许可证与说明，解压后运行 `PortManager.exe`。
 - 对应 `.sha256`：运行 `Get-FileHash 文件名 -Algorithm SHA256`，与文件中的值核对。
 
 程序未签名。如被系统拦截，请先核对 GitHub 发布来源与校验值，再按系统提示处理。程序不会安装服务或修改系统配置。
+
+从此版起，托盘菜单可检查更新。发现新版后可在客户端内下载并校验 EXE，再手动替换旧版。
 
 ## 构建和测试
 
